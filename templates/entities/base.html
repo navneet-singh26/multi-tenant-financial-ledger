@@ -1,0 +1,154 @@
+
+{% extends "base.html" %}
+{% load entity_tags %}
+
+{% block extra_css %}
+<style>
+    .entity-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+    }
+    
+    .entity-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .entity-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+    
+    .entity-details h1 {
+        margin: 0;
+        font-size: 1.75rem;
+    }
+    
+    .entity-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .entity-nav {
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 2rem;
+    }
+    
+    .entity-nav .nav-link {
+        color: #495057;
+        padding: 1rem 1.5rem;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .entity-nav .nav-link:hover {
+        color: #0d6efd;
+    }
+    
+    .entity-nav .nav-link.active {
+        color: #0d6efd;
+        border-bottom-color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if current_entity %}
+<div class="entity-header">
+    <div class="container">
+        <div class="entity-info">
+            <div class="entity-icon">
+                <i class="bi bi-building"></i>
+            </div>
+            <div class="entity-details">
+                <h1>{{ current_entity.name }}</h1>
+                <div class="entity-meta">
+                    <span><i class="bi bi-tag"></i> {{ current_entity.entity_type|title }}</span>
+                    <span><i class="bi bi-currency-dollar"></i> {{ current_entity.currency }}</span>
+                    <span><i class="bi bi-clock"></i> {{ current_entity.timezone }}</span>
+                    <span>{{ current_entity.status|entity_status_badge }}</span>
+                </div>
+            </div>
+            <div class="ms-auto">
+                {% entity_selector user current_entity %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="entity-nav">
+    <div class="container">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-dashboard' %}active{% endif %}" 
+                   href="{% url 'entity-dashboard' current_entity.id %}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-accounts' %}active{% endif %}" 
+                   href="{% url 'entity-accounts' current_entity.id %}">
+                    <i class="bi bi-journal-text"></i> Accounts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-transactions' %}active{% endif %}" 
+                   href="{% url 'entity-transactions' current_entity.id %}">
+                    <i class="bi bi-arrow-left-right"></i> Transactions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-reports' %}active{% endif %}" 
+                   href="{% url 'entity-reports' current_entity.id %}">
+                    <i class="bi bi-graph-up"></i> Reports
+                </a>
+            </li>
+            {% if user|has_entity_permission:"can_manage_members,current_entity.id" %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-members' %}active{% endif %}" 
+                   href="{% url 'entity-members' current_entity.id %}">
+                    <i class="bi bi-people"></i> Members
+                </a>
+            </li>
+            {% endif %}
+            {% if user|has_entity_permission:"can_manage_settings,current_entity.id" %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'entity-settings' %}active{% endif %}" 
+                   href="{% url 'entity-settings' current_entity.id %}">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    {% block entity_content %}
+    {% endblock %}
+</div>
+
+{% else %}
+<div class="container mt-5">
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        No entity selected. Please select an entity to continue.
+    </div>
+    <div class="text-center mt-4">
+        {% entity_selector user %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

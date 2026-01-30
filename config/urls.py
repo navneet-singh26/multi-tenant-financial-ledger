@@ -18,7 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView
+)
 
 urlpatterns = [
     # Admin
@@ -29,14 +33,14 @@ urlpatterns = [
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     
-    # API Endpoints
-    path('api/v1/accounts/', include('accounts.urls')),
-    path('api/v1/entities/', include('entities.urls')),
-    path('api/v1/ledger/', include('ledger.urls')),
-    path('api/v1/payments/', include('payments.urls')),
-    path('api/v1/rbac/', include('rbac.urls')),
+    # API endpoints
+    path('api/accounts/', include('accounts.urls')),
+    path('api/entities/', include('entities.urls')),
+    path('api/ledger/', include('ledger.urls')),
+    path('api/payments/', include('payments.urls')),
+    path('api/rbac/', include('rbac.urls')),
     
-    # Prometheus Metrics
+    # Prometheus metrics
     path('', include('django_prometheus.urls')),
 ]
 

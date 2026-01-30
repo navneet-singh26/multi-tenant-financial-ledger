@@ -15,6 +15,12 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
+ENTITY_SCHEMA_PREFIX = 'entity_'
+ENTITY_DEFAULT_CURRENCY = 'USD'
+ENTITY_DEFAULT_TIMEZONE = 'UTC'
+ENTITY_MAX_MEMBERS = 100
+ENTITY_AUDIT_LOG_RETENTION_DAYS = 365
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,6 +62,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rbac.middleware.TenantMiddleware',  # Custom middleware for multi-tenancy
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+    'entities.middleware.EntityContextMiddleware',
+    'entities.middleware.EntityPermissionMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -71,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'entities.context_processors.entity_context',
             ],
         },
     },

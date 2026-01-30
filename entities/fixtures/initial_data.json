@@ -1,0 +1,53 @@
+
+[
+    {
+        "model": "entities.entity",
+        "pk": "550e8400-e29b-41d4-a716-446655440000",
+        "fields": {
+            "name": "Demo Company",
+            "entity_type": "company",
+            "schema_name": "entity_demo_company",
+            "currency": "USD",
+            "timezone": "America/New_York",
+            "status": "active",
+            "is_active": true,
+            "registration_number": "DEMO-001",
+            "tax_id": "12-3456789",
+            "address": "123 Demo Street",
+            "city": "New York",
+            "state": "NY",
+            "country": "US",
+            "postal_code": "10001",
+            "phone": "+1-555-0100",
+            "email": "info@democompany.com",
+            "website": "https://democompany.com",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "entities.entitysettings",
+        "pk": 1,
+        "fields": {
+            "entity": "550e8400-e29b-41d4-a716-446655440000",
+            "fiscal_year_start": 1,
+            "date_format": "MM/DD/YYYY",
+            "number_format": "en-US",
+            "decimal_places": 2,
+            "tax_settings": {
+                "tax_rate": 0.0,
+                "tax_number": "12-3456789",
+                "tax_type": "sales_tax"
+            },
+            "notification_settings": {
+                "email_notifications": true,
+                "low_balance_alert": true,
+                "transaction_alerts": true
+            },
+            "integration_settings": {},
+            "custom_fields": {},
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    }
+]
